@@ -32,9 +32,7 @@ namespace Patcher
             {
                 ReturnObject = (PatchList)Serializer.Deserialize(XmlReader);
             }
-            catch
-            {
-            }
+            catch { }
             XmlReader.Close();
             return ReturnObject;
         }
