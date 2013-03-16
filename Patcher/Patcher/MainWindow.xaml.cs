@@ -48,21 +48,10 @@ namespace Patcher
         private bool IsWin7OrHigher()
         {
             OperatingSystem OS = Environment.OSVersion;
-            if (OS.Version.Major >= 6)
-            {
-                if (OS.Version.Minor >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            if (OS.Version.Major >= 6 && OS.Version.Minor >= 1)
+                return true;
             else
-            {
                 return false;
-            }
         }
 
         private void BtnCloseClick(object sender, MouseButtonEventArgs e)
@@ -97,9 +86,7 @@ namespace Patcher
             BtnPlay.IsEnabled = false;
 
             if (this.IsPatched)
-            {
                 this.StartGame();
-            }
             else
             {
                 BackgroundWorker bgWorker = new BackgroundWorker();
@@ -272,9 +259,7 @@ namespace Patcher
                 if (File.Exists(PatchFiles[FileNr].Name))
                 {
                     if (this.GetFileHash(PatchFiles[FileNr].Name) != PatchFiles[FileNr].Hash)
-                    {
                         this.DownloadFile(FileNr, PatchFiles);
-                    }
                     else
                     {
                         this.AddTextToList(String.Format("{0} ist aktuell\r\n", PatchFiles[FileNr].Name));
@@ -283,9 +268,7 @@ namespace Patcher
                     }
                 }
                 else
-                {
                     this.DownloadFile(FileNr, PatchFiles);
-                }
             }
         }
 
@@ -322,9 +305,8 @@ namespace Patcher
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (File.Exists("Updater.exe"))
-            {
                 File.Delete("Updater.exe");
-            }
+			
             WebClient wbClient = new WebClient();
             wbClient.Proxy = null;
             wbClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(VersionDownload);
