@@ -13,7 +13,7 @@ class User extends Database
 	
 	public function CheckUserData($Username, $Password)
 	{
-		$Password = bin2hex(mhash(MHASH_SHA512, sprintf("%s%s", strtolower($Username), $Password)));
+		$Password = bin2hex(hash('sha512', sprintf("%s%s", strtolower($Username), $Password)));
 		$count = $this->QuerySelect("SELECT count(UserID) AS count FROM User WHERE lower(Username) = lower(:Username) AND Password = :Password", array(":Username" => $Username, ":Password" => $Password));
 		if ($count[0]["count"] >= 1)
 		{
@@ -73,7 +73,7 @@ class User extends Database
 	
 	public function ChangePassword($Username, $Password)
 	{
-		$Password = bin2hex(mhash(MHASH_SHA512, sprintf("%s%s", strtolower($Username), $Password)));
+		$Password = bin2hex(hash('sha512', sprintf("%s%s", strtolower($Username), $Password)));
 		return $this->Query("UPDATE User SET Password = :Password WHERE Username = :Username", array(":Password" => $Password, ":Username" => $Username));
 	}
 	
@@ -107,7 +107,7 @@ class User extends Database
 	
 	public function CreateUser($Username, $Password, $GroupID)
 	{
-		$Password = bin2hex(mhash(MHASH_SHA512, sprintf("%s%s", strtolower($Username), $Password)));
+		$Password = bin2hex(hash('sha512', sprintf("%s%s", strtolower($Username), $Password)));
 		return $this->Query("INSERT INTO User (Username, Password, GroupID) VALUES (:Username, :Password, :GroupID)", array(":Username" => $Username, ":Password" => $Password, ":GroupID" => $GroupID));
 	}
 	
@@ -137,7 +137,7 @@ class User extends Database
 		}
 		else
 		{
-			$Password = bin2hex(mhash(MHASH_SHA512, sprintf("%s%s", strtolower($this->GetUsername($UserID)), $Password)));
+			$Password = bin2hex(hash('sha512', sprintf("%s%s", strtolower($this->GetUsername($UserID)), $Password)));
 			return $this->Query("UPDATE User SET GroupID = :GroupID, Password = :Password WHERE UserID = :UserID", array(":GroupID" => $GroupID, ":Password" => $Password, ":UserID" => $UserID));
 		}
 	}

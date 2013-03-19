@@ -51,7 +51,7 @@ if (isset($_GET["ajax"]))
 	}
 	else if (isset($_GET["install"]) && $_GET["install"] == "admin")
 	{
-		$password = bin2hex(mhash(MHASH_SHA512, sprintf("%s%s", strtolower("admin"), "admin123")));
+		$password = bin2hex(hash('sha512', sprintf("%s%s", strtolower("admin"), "admin123")));
 		$db = new SQLite3($sqlite, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
 		if ($db->exec("INSERT INTO User (Username, Password, GroupID) VALUES ('admin', '".$password."', 1)") == false)
 			echo "1";
